@@ -113,17 +113,84 @@ func (app *application) send(ctx context.Context, b *bot.Bot, update *models.Upd
 	}
 
 	// Send the message with a inline button to the recipient user. If user clicks on reply button, a callback query with reply_<recipient_id> data will be send.
-	b.SendMessage(ctx, &bot.SendMessageParams{
-		ChatID: ru.ChatID,
-		Text:   update.Message.Text,
-		ReplyMarkup: &models.InlineKeyboardMarkup{
-			InlineKeyboard: [][]models.InlineKeyboardButton{
-				{
-					{Text: "Reply", CallbackData: "reply_" + u.ID.String()},
-				},
+
+	ibm := &models.InlineKeyboardMarkup{
+		InlineKeyboard: [][]models.InlineKeyboardButton{
+			{
+				{Text: "Reply", CallbackData: "reply_" + u.ID.String()},
 			},
 		},
-	})
+	}
+
+	// Check if the message type is text
+	if update.Message.Text != "" {
+		b.SendMessage(ctx, &bot.SendMessageParams{
+			ChatID:      ru.ChatID,
+			Text:        update.Message.Text,
+			ReplyMarkup: ibm,
+		})
+		// Check if the message type is sticker
+	} else if update.Message.Sticker != nil {
+		b.SendSticker(ctx, &bot.SendStickerParams{
+			ChatID:      ru.ChatID,
+			Sticker:     &models.InputFileString{Data: update.Message.Sticker.FileID},
+			ReplyMarkup: ibm,
+		})
+		// Check if the message type is a GIF
+	} else if update.Message.Animation != nil {
+		b.SendAnimation(ctx, &bot.SendAnimationParams{
+			ChatID:      ru.ChatID,
+			Animation:   &models.InputFileString{Data: update.Message.Animation.FileID},
+			Caption:     update.Message.Caption,
+			ReplyMarkup: ibm,
+		})
+		// Check if the message type is photo
+	} else if update.Message.Photo != nil {
+		b.SendPhoto(ctx, &bot.SendPhotoParams{
+			ChatID:      ru.ChatID,
+			Photo:       &models.InputFileString{Data: update.Message.Photo[len(update.Message.Photo)-1].FileID},
+			Caption:     update.Message.Caption,
+			ReplyMarkup: ibm,
+		})
+		// Check if the message type is video
+	} else if update.Message.Video != nil {
+		b.SendVideo(ctx, &bot.SendVideoParams{
+			ChatID:      ru.ChatID,
+			Video:       &models.InputFileString{Data: update.Message.Video.FileID},
+			Caption:     update.Message.Caption,
+			ReplyMarkup: ibm,
+		})
+		// Check if the message type is voice
+	} else if update.Message.Voice != nil {
+		b.SendVoice(ctx, &bot.SendVoiceParams{
+			ChatID:      ru.ChatID,
+			Voice:       &models.InputFileString{Data: update.Message.Voice.FileID},
+			ReplyMarkup: ibm,
+		})
+		// Check if the message type is audio
+	} else if update.Message.Audio != nil {
+		b.SendAudio(ctx, &bot.SendAudioParams{
+			ChatID:      ru.ChatID,
+			Audio:       &models.InputFileString{Data: update.Message.Audio.FileID},
+			Caption:     update.Message.Caption,
+			ReplyMarkup: ibm,
+		})
+		// Check if the message type is document
+	} else if update.Message.Document != nil {
+		b.SendDocument(ctx, &bot.SendDocumentParams{
+			ChatID:      ru.ChatID,
+			Document:    &models.InputFileString{Data: update.Message.Document.FileID},
+			ReplyMarkup: ibm,
+		})
+	} else {
+		b.SendMessage(ctx, &bot.SendMessageParams{
+			ChatID: update.Message.Chat.ID,
+			Text:   "Your message type doesn't supported with this bot.",
+		})
+
+		// We return here because we don't want to leave the sending state just becuase the message type is not supported by the bot
+		return
+	}
 
 	// After sending the message, user will leave the sending state
 	app.users.LeaveSendingState(u.ChatID)
