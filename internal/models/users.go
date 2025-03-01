@@ -6,6 +6,17 @@ import (
 	"github.com/google/uuid"
 )
 
+type AllowedTypes struct {
+	Text     bool
+	Sticker  bool
+	Gif      bool
+	Photo    bool
+	Video    bool
+	Voice    bool
+	Audio    bool
+	Document bool
+}
+
 // The User type is a struct for storing each user data
 type User struct {
 	ID          uuid.UUID
@@ -90,6 +101,56 @@ func (m *UserModel) updateSendingState(chatID int64, isSending bool, recipientID
 	WHERE chat_id = $3`
 
 	_, err := m.DB.Exec(stmt, isSending, recipientID, chatID)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// GetAllowedTypes returns a struct that have all permission types for a single user.
+func (m *UserModel) GetAllowedTypes(chatID int64) (*AllowedTypes, error) {
+	stmt := `SELECT allow_text, allow_sticker, allow_gif, allow_photo, allow_video, allow_voice, allow_audio, allow_document FROM users
+	WHERE chat_id = $1`
+
+	at := &AllowedTypes{}
+
+	err := m.DB.QueryRow(stmt, chatID).Scan(&at.Text, &at.Sticker, &at.Gif, &at.Photo, &at.Video, &at.Voice, &at.Audio, &at.Document)
+	if err != nil {
+		return nil, err
+	}
+
+	return at, nil
+}
+
+func (m *UserModel) TogglePermission(chatID int64, per string) error {
+	at, err := m.GetAllowedTypes(chatID)
+	if err != nil {
+		return err
+	}
+
+	stmt := "UPDATE users SET allow_" + per + " = $1 WHERE chat_id = $2"
+	up := false
+	switch per {
+	case "text":
+		up = !at.Text
+	case "sticker":
+		up = !at.Sticker
+	case "gif":
+		up = !at.Gif
+	case "photo":
+		up = !at.Photo
+	case "video":
+		up = !at.Video
+	case "voice":
+		up = !at.Voice
+	case "audio":
+		up = !at.Audio
+	case "document":
+		up = !at.Document
+	}
+
+	_, err = m.DB.Exec(stmt, up, chatID)
 	if err != nil {
 		return err
 	}
