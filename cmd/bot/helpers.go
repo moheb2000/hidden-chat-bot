@@ -15,3 +15,13 @@ func sendError(ctx context.Context, b *bot.Bot, chatID int64, msg string, err er
 
 	log.Println(err)
 }
+
+func contains(slice []int64, item int64) bool {
+	for _, v := range slice {
+		if v == item {
+			return true
+		}
+	}
+
+	return false
+}

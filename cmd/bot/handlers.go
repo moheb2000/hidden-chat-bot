@@ -6,6 +6,7 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
+	"strconv"
 	"strings"
 
 	"github.com/go-telegram/bot"
@@ -211,6 +212,16 @@ func (app *application) send(ctx context.Context, b *bot.Bot, update *models.Upd
 		return
 	}
 
+	// Check if recipient user blocks sender or not
+	if contains(ru.Blocks, update.Message.Chat.ID) {
+		b.SendMessage(ctx, &bot.SendMessageParams{
+			ChatID: update.Message.Chat.ID,
+			Text:   "You blocked by the user you're trying to send the message!",
+		})
+
+		return
+	}
+
 	at, err := app.users.GetAllowedTypes(ru.ChatID)
 	if err != nil {
 		sendError(ctx, b, update.Message.Chat.ID, "There is a problem in our servers. Please wait a moment and try again...", err)
@@ -223,6 +234,14 @@ func (app *application) send(ctx context.Context, b *bot.Bot, update *models.Upd
 		InlineKeyboard: [][]models.InlineKeyboardButton{
 			{
 				{Text: "Reply", CallbackData: "reply_" + u.ID.String()},
+			},
+			{
+				{Text: "Block", CallbackData: "block_" + strconv.FormatInt(u.ChatID, 10)},
+				{Text: "Report", CallbackData: "report"},
+			},
+			{
+				// TODO: Add changing ad link in admin panel after implementing admin user
+				{Text: "Ad", URL: "https://t.me/Otazy"},
 			},
 		},
 	}
@@ -365,4 +384,86 @@ func (app *application) toggleTypePermission(next bot.HandlerFunc) bot.HandlerFu
 
 		next(ctx, b, update)
 	}
+}
+
+// report runs when a user wants to report a message to admin
+// TODO: Add report functionallity after adding admin feature
+func report(ctx context.Context, b *bot.Bot, update *models.Update) {
+	b.AnswerCallbackQuery(ctx, &bot.AnswerCallbackQueryParams{
+		CallbackQueryID: update.CallbackQuery.ID,
+		ShowAlert:       false,
+	})
+}
+
+// block runs when a user clicks on block inline button below a message to blocks the sender message
+func (app *application) block(ctx context.Context, b *bot.Bot, update *models.Update) {
+	b.AnswerCallbackQuery(ctx, &bot.AnswerCallbackQueryParams{
+		CallbackQueryID: update.CallbackQuery.ID,
+		ShowAlert:       false,
+	})
+
+	bl := strings.Split(update.CallbackQuery.Data, "_")
+
+	if len(bl) != 2 {
+		sendError(ctx, b, update.Message.Chat.ID, "There is a problem in our servers. Please wait a moment and try again...", nil)
+		return
+	}
+
+	// block is a handler function to answers to callback query data which is started by block_ or unblock_. This line of code checks if we are trying to block someone or unblock
+	isBlocking := false
+	if bl[0] == "block" {
+		isBlocking = true
+	}
+
+	// Convert chat id from string to int64
+	blockChatID, err := strconv.ParseInt(bl[1], 10, 64)
+	if err != nil {
+		sendError(ctx, b, update.Message.Chat.ID, "There is a problem in our servers. Please wait a moment and try again...", err)
+		return
+	}
+
+	// Based on isBlocking boolean value, we decide to add or remove chat id of sender to blocks array in database or not
+	if isBlocking {
+		err = app.users.AddBlockArray(update.CallbackQuery.Message.Message.Chat.ID, blockChatID)
+	} else {
+		err = app.users.RemoveBlockArray(update.CallbackQuery.Message.Message.Chat.ID, blockChatID)
+	}
+	if err != nil {
+		sendError(ctx, b, update.Message.Chat.ID, "There is a problem in our servers. Please wait a moment and try again...", err)
+		return
+	}
+
+	ibm := &models.InlineKeyboardMarkup{
+		InlineKeyboard: [][]models.InlineKeyboardButton{},
+	}
+
+	// Retrieve the inline buttons from the callback query
+	ibm.InlineKeyboard = update.CallbackQuery.Message.Message.ReplyMarkup.InlineKeyboard
+	// Change the block button based on block/unblock users
+	// TODO: This is hardcoded logic to change the inline button for blocking feature, but need to be replaced with a more generic approach
+	if isBlocking {
+		ibm.InlineKeyboard[1][0].Text = "Unblock"
+		ibm.InlineKeyboard[1][0].CallbackData = "unblock_" + strings.Split(ibm.InlineKeyboard[1][0].CallbackData, "_")[1]
+	} else {
+		ibm.InlineKeyboard[1][0].Text = "Block"
+		ibm.InlineKeyboard[1][0].CallbackData = "block_" + strings.Split(ibm.InlineKeyboard[1][0].CallbackData, "_")[1]
+	}
+
+	b.EditMessageReplyMarkup(ctx, &bot.EditMessageReplyMarkupParams{
+		ChatID:      update.CallbackQuery.Message.Message.Chat.ID,
+		MessageID:   update.CallbackQuery.Message.Message.ID,
+		ReplyMarkup: ibm,
+	})
+
+	t := ""
+	if isBlocking {
+		t = "Blocked succesfully"
+	} else {
+		t = "Unblocked successfully"
+	}
+
+	b.SendMessage(ctx, &bot.SendMessageParams{
+		ChatID: update.CallbackQuery.Message.Message.Chat.ID,
+		Text:   t,
+	})
 }

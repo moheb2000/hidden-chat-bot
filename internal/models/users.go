@@ -4,6 +4,7 @@ import (
 	"database/sql"
 
 	"github.com/google/uuid"
+	"github.com/lib/pq"
 )
 
 type AllowedTypes struct {
@@ -23,6 +24,7 @@ type User struct {
 	ChatID      int64
 	IsSending   bool
 	RecipientID uuid.UUID
+	Blocks      []int64
 }
 
 // The UserModel type has access to an instance of application's database
@@ -57,12 +59,12 @@ func (m *UserModel) Exists(chatID int64) (bool, error) {
 
 // Get returns a user with the uuid token specified
 func (m *UserModel) Get(id uuid.UUID) (*User, error) {
-	stmt := `SELECT id, chat_id, is_sending, recipient_id FROM users
+	stmt := `SELECT id, chat_id, is_sending, recipient_id, blocks FROM users
 	WHERE id = $1`
 
 	u := &User{}
 
-	err := m.DB.QueryRow(stmt, id).Scan(&u.ID, &u.ChatID, &u.IsSending, &u.RecipientID)
+	err := m.DB.QueryRow(stmt, id).Scan(&u.ID, &u.ChatID, &u.IsSending, &u.RecipientID, pq.Array(&u.Blocks))
 	if err != nil {
 		return nil, err
 	}
@@ -72,12 +74,12 @@ func (m *UserModel) Get(id uuid.UUID) (*User, error) {
 
 // Get returns a user with the chat id in the telegram specified
 func (m *UserModel) GetBychatID(chatID int64) (*User, error) {
-	stmt := `SELECT id, chat_id, is_sending, recipient_id FROM users
+	stmt := `SELECT id, chat_id, is_sending, recipient_id, blocks FROM users
 	WHERE chat_id = $1`
 
 	u := &User{}
 
-	err := m.DB.QueryRow(stmt, chatID).Scan(&u.ID, &u.ChatID, &u.IsSending, &u.RecipientID)
+	err := m.DB.QueryRow(stmt, chatID).Scan(&u.ID, &u.ChatID, &u.IsSending, &u.RecipientID, pq.Array(&u.Blocks))
 	if err != nil {
 		return nil, err
 	}
@@ -151,6 +153,32 @@ func (m *UserModel) TogglePermission(chatID int64, per string) error {
 	}
 
 	_, err = m.DB.Exec(stmt, up, chatID)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// AddBlockArray adds a chat id to the blocks array in database
+func (m *UserModel) AddBlockArray(chatID int64, blockChatID int64) error {
+	stmt := `UPDATE users SET blocks = array_append(blocks, $1)
+	WHERE chat_id = $2`
+
+	_, err := m.DB.Exec(stmt, blockChatID, chatID)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// RemoveBlockArray removes a chat id to the blocks array in database
+func (m *UserModel) RemoveBlockArray(chatID int64, blockChatID int64) error {
+	stmt := `UPDATE users SET blocks = array_remove(blocks, $1)
+	WHERE chat_id = $2`
+
+	_, err := m.DB.Exec(stmt, blockChatID, chatID)
 	if err != nil {
 		return err
 	}
