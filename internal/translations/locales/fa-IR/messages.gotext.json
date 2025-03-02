@@ -127,6 +127,26 @@
             "translation": "پیامتو بفرست ✏️:"
         },
         {
+            "id": "🔴 Ban",
+            "message": "🔴 Ban",
+            "translation": "🔴 مسدود"
+        },
+        {
+            "id": "🟢 Unban",
+            "message": "🟢 Unban",
+            "translation": "🟢 رفع مسدودیت"
+        },
+        {
+            "id": "Banned succesfully! 🔴✅",
+            "message": "Banned succesfully! 🔴✅",
+            "translation": "با موفقیت مسدود شد! 🔴✅"
+        },
+        {
+            "id": "Unbanned successfully! 🟢✅",
+            "message": "Unbanned successfully! 🟢✅",
+            "translation": "با موفقیت از مسدودیت خارج شد! 🟢✅"
+        },
+        {
             "id": "🔓 Unblock",
             "message": "🔓 Unblock",
             "translation": "🔓 آنبلاک"
@@ -140,7 +160,11 @@
             "id": "Unblocked successfully! 🔓✅",
             "message": "Unblocked successfully! 🔓✅",
             "translation": "با موفقیت آنبلاک شد! 🔓✅"
+        },
+        {
+            "id": "You are banned by bot's admin and you can't use bot anymore! ⛔❌🔴",
+            "message": "You are banned by bot's admin and you can't use bot anymore! ⛔❌🔴",
+            "translation": "ادمین بات شما رو مسدود کرده و نمی تونید از این به بعد از بات استفاده کنید! ⛔❌🔴"
         }
     ]
 }
-

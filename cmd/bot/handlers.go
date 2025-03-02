@@ -16,23 +16,6 @@ import (
 
 // start handles the "/start" command in the bot. If user send this command with an id in the database, user can send hidden message to someone with that id in the database and if this command doesn't have an id, welcome screen will be shown to the user
 func (app *application) start(ctx context.Context, b *bot.Bot, update *models.Update) {
-	// TODO: check if this code must go to a middleware to run on all requests or not
-	// Check if the user exists in the database records or not and if it doesn't create a new user record
-	exists, err := app.users.Exists(update.Message.Chat.ID)
-	if err != nil {
-		sendError(ctx, b, update.Message.Chat.ID, "There is a problem in our servers. Please wait a moment and try again...", err)
-		return
-	}
-
-	// If the user doesn't exist in the database, create a new user record
-	if !exists {
-		err = app.users.Insert(update.Message.Chat.ID)
-		if err != nil {
-			sendError(ctx, b, update.Message.Chat.ID, "There is a problem in our servers. Please wait a moment and try again...", err)
-			return
-		}
-	}
-
 	// ml is a variable to handle deep links sended to the bot for sending messages
 	ml := strings.Split(update.Message.Text, " ")
 	// Check if there is an id in the command or not
@@ -248,7 +231,7 @@ func (app *application) send(ctx context.Context, b *bot.Bot, update *models.Upd
 			},
 			{
 				{Text: app.config.locale.Translate("🔒 Block"), CallbackData: "block_" + strconv.FormatInt(u.ChatID, 10)},
-				{Text: app.config.locale.Translate("🚨 Report"), CallbackData: "report"},
+				{Text: app.config.locale.Translate("🚨 Report"), CallbackData: "report_" + strconv.FormatInt(u.ChatID, 10)},
 			},
 			{
 				// TODO: Add changing ad link in admin panel after implementing admin user
@@ -380,34 +363,114 @@ func (app *application) sendState(ctx context.Context, b *bot.Bot, message *mode
 	})
 }
 
-// toggleTypePermission is a middleware that runs before showing premissions page. This allows users to see changes in permissions instantly after clicking on a type inline button
-func (app *application) toggleTypePermission(next bot.HandlerFunc) bot.HandlerFunc {
-	return func(ctx context.Context, b *bot.Bot, update *models.Update) {
-		pl := strings.Split(update.CallbackQuery.Data, "_")
-
-		// toggle_permission_<per> has two underscores, so the length of callback query data supposed to be 3
-		if len(pl) != 3 {
-			b.AnswerCallbackQuery(ctx, &bot.AnswerCallbackQueryParams{
-				CallbackQueryID: update.CallbackQuery.ID,
-				ShowAlert:       false,
-			})
-
-			return
-		}
-
-		per := pl[2]
-		app.users.TogglePermission(update.CallbackQuery.Message.Message.Chat.ID, per)
-
-		next(ctx, b, update)
-	}
-}
-
 // report runs when a user wants to report a message to admin
-// TODO: Add report functionallity after adding admin feature
-func report(ctx context.Context, b *bot.Bot, update *models.Update) {
+func (app *application) report(ctx context.Context, b *bot.Bot, update *models.Update) {
 	b.AnswerCallbackQuery(ctx, &bot.AnswerCallbackQueryParams{
 		CallbackQueryID: update.CallbackQuery.ID,
 		ShowAlert:       false,
+	})
+
+	rl := strings.Split(update.CallbackQuery.Data, "_")
+	if len(rl) != 2 {
+		return
+	}
+
+	ibm := &models.InlineKeyboardMarkup{
+		InlineKeyboard: [][]models.InlineKeyboardButton{
+			{
+				{Text: app.config.locale.Translate("🔴 Ban"), CallbackData: "ban_" + rl[1]},
+			},
+		},
+	}
+
+	ad, err := app.users.GetAdmin()
+	if err != nil {
+		return
+	}
+
+	b.CopyMessage(ctx, &bot.CopyMessageParams{
+		ChatID:      ad.ChatID,
+		FromChatID:  update.CallbackQuery.Message.Message.Chat.ID,
+		MessageID:   update.CallbackQuery.Message.Message.ID,
+		ReplyMarkup: ibm,
+	})
+}
+
+// ban runs when admin clicks on ban inline button below a message to ban the user from using bot
+func (app *application) ban(ctx context.Context, b *bot.Bot, update *models.Update) {
+	b.AnswerCallbackQuery(ctx, &bot.AnswerCallbackQueryParams{
+		CallbackQueryID: update.CallbackQuery.ID,
+		ShowAlert:       false,
+	})
+
+	bl := strings.Split(update.CallbackQuery.Data, "_")
+
+	if len(bl) != 2 {
+		sendError(ctx, b, update.Message.Chat.ID, "There is a problem in our servers. Please wait a moment and try again...", nil)
+		return
+	}
+
+	// ban is a handler function to answers to callback query data which is started by ban_ or unban_. This line of code checks if we are trying to ban someone or unban
+	isBanning := false
+	if bl[0] == "ban" {
+		isBanning = true
+	}
+
+	// Convert chat id from string to int64
+	banChatID, err := strconv.ParseInt(bl[1], 10, 64)
+	if err != nil {
+		sendError(ctx, b, update.Message.Chat.ID, "There is a problem in our servers. Please wait a moment and try again...", err)
+		return
+	}
+
+	// Based on isBanning boolean value, we decide to change the value of is_ban field for the corresponding user to true or false
+	if isBanning {
+		err = app.users.Ban(banChatID)
+	} else {
+		err = app.users.Unban(banChatID)
+	}
+	if err != nil {
+		sendError(ctx, b, update.Message.Chat.ID, "There is a problem in our servers. Please wait a moment and try again...", err)
+		return
+	}
+
+	ibm := &models.InlineKeyboardMarkup{
+		InlineKeyboard: [][]models.InlineKeyboardButton{},
+	}
+
+	// Change the ban button based on ban/unban users
+	if isBanning {
+		ibm.InlineKeyboard = append(ibm.InlineKeyboard, []models.InlineKeyboardButton{
+			{
+				Text:         app.config.locale.Translate("🟢 Unban"),
+				CallbackData: "unban_" + bl[1],
+			},
+		})
+	} else {
+		ibm.InlineKeyboard = append(ibm.InlineKeyboard, []models.InlineKeyboardButton{
+			{
+				Text:         app.config.locale.Translate("🔴 Ban"),
+				CallbackData: "ban_" + bl[1],
+			},
+		})
+	}
+
+	b.EditMessageReplyMarkup(ctx, &bot.EditMessageReplyMarkupParams{
+		ChatID:      update.CallbackQuery.Message.Message.Chat.ID,
+		MessageID:   update.CallbackQuery.Message.Message.ID,
+		ReplyMarkup: ibm,
+	})
+
+	t := ""
+	if isBanning {
+		t = app.config.locale.Translate("Banned succesfully! 🔴✅")
+	} else {
+		t = app.config.locale.Translate("Unbanned successfully! 🟢✅")
+	}
+
+	b.SendMessage(ctx, &bot.SendMessageParams{
+		ChatID: update.CallbackQuery.Message.Message.Chat.ID,
+		Text:   t,
 	})
 }
 

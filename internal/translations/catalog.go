@@ -39,18 +39,21 @@ func init() {
 }
 
 var messageKeyToIndex = map[string]int{
-	"Audio":                            12,
-	"Blocked succesfully! 🔒✅":          26,
-	"Document":                         13,
-	"Gif":                              8,
-	"Photo":                            9,
-	"Send your message ✏️:":            24,
-	"Sticker":                          7,
-	"Text":                             6,
-	"Unblocked successfully! 🔓✅":       27,
-	"Video":                            10,
-	"Voice":                            11,
-	"You are not in sending mode... ⛔": 17,
+	"Audio":                      12,
+	"Banned succesfully! 🔴✅":     27,
+	"Blocked succesfully! 🔒✅":    30,
+	"Document":                   13,
+	"Gif":                        8,
+	"Photo":                      9,
+	"Send your message ✏️:":      24,
+	"Sticker":                    7,
+	"Text":                       6,
+	"Unbanned successfully! 🟢✅":  28,
+	"Unblocked successfully! 🔓✅": 31,
+	"Video":                      10,
+	"Voice":                      11,
+	"You are banned by bot's admin and you can't use bot anymore! ⛔❌🔴":            32,
+	"You are not in sending mode... ⛔":                                            17,
 	"You blocked by the user you're trying to send the message! 🔒😿":               18,
 	"Your message sended successfully! 📨😍":                                        23,
 	"Your message type is limited by reciever or isn't supported by this bot. 🔒🥹": 22,
@@ -63,24 +66,29 @@ var messageKeyToIndex = map[string]int{
 	"⬅️ Back":                               14,
 	"💬 Reply":                               19,
 	"🔒 Block":                               20,
-	"🔓 Unblock":                             25,
+	"🔓 Unblock":                             29,
 	"🔗 Get Hidden Link":                     2,
+	"🔴 Ban":                                 25,
 	"🚨 Report":                              21,
 	"🚫 Message Restrictions":                4,
+	"🟢 Unban":                               26,
 }
 
-var en_USIndex = []uint32{ // 29 elements
+var en_USIndex = []uint32{ // 34 elements
+	// Entry 0 - 1F
 	0x00000000, 0x0000000d, 0x0000001d, 0x00000032,
 	0x00000155, 0x0000016f, 0x00000206, 0x0000020b,
 	0x00000213, 0x00000217, 0x0000021d, 0x00000223,
 	0x00000229, 0x0000022f, 0x00000238, 0x00000244,
 	0x00000293, 0x0000039a, 0x000003bd, 0x00000401,
 	0x0000040c, 0x00000417, 0x00000423, 0x00000475,
-	0x000004a0, 0x000004ba, 0x000004c7, 0x000004e4,
-	0x00000504,
-} // Size: 140 bytes
+	0x000004a0, 0x000004ba, 0x000004c3, 0x000004ce,
+	0x000004ea, 0x00000509, 0x00000516, 0x00000533,
+	// Entry 20 - 3F
+	0x00000553, 0x0000059b,
+} // Size: 160 bytes
 
-const en_USData string = "" + // Size: 1284 bytes
+const en_USData string = "" + // Size: 1435 bytes
 	"\x02ℹ️ About\x02⚙️ Settings\x02🔗 Get Hidden Link\x02Hello 👋, Welcome to " +
 	"*Hidden Chat Bot*!🥰\x0a\x0aYou can create hidden chat links and others c" +
 	"an send you messages without knowing your username😻😻.\x0a\x0aJust click " +
@@ -97,21 +105,26 @@ const en_USData string = "" + // Size: 1284 bytes
 	"re not in sending mode... ⛔\x02You blocked by the user you're trying to " +
 	"send the message! 🔒😿\x02💬 Reply\x02🔒 Block\x02🚨 Report\x02Your message t" +
 	"ype is limited by reciever or isn't supported by this bot. 🔒🥹\x02Your me" +
-	"ssage sended successfully! 📨😍\x02Send your message ✏️:\x02🔓 Unblock\x02B" +
-	"locked succesfully! 🔒✅\x02Unblocked successfully! 🔓✅"
+	"ssage sended successfully! 📨😍\x02Send your message ✏️:\x02🔴 Ban\x02🟢 Unb" +
+	"an\x02Banned succesfully! 🔴✅\x02Unbanned successfully! 🟢✅\x02🔓 Unblock" +
+	"\x02Blocked succesfully! 🔒✅\x02Unblocked successfully! 🔓✅\x02You are ban" +
+	"ned by bot's admin and you can't use bot anymore! ⛔❌🔴"
 
-var fa_IRIndex = []uint32{ // 29 elements
+var fa_IRIndex = []uint32{ // 34 elements
+	// Entry 0 - 1F
 	0x00000000, 0x00000019, 0x0000002f, 0x00000053,
 	0x0000023e, 0x00000262, 0x00000355, 0x0000035c,
 	0x00000369, 0x00000370, 0x00000377, 0x00000380,
 	0x00000387, 0x0000038e, 0x00000397, 0x000003ab,
 	0x00000437, 0x000005b8, 0x00000600, 0x0000065a,
 	0x00000668, 0x00000676, 0x00000686, 0x00000741,
-	0x00000778, 0x00000798, 0x000007aa, 0x000007d3,
-	0x00000800,
-} // Size: 140 bytes
+	0x00000778, 0x00000798, 0x000007a8, 0x000007c3,
+	0x000007ee, 0x0000082b, 0x0000083d, 0x00000866,
+	// Entry 20 - 3F
+	0x00000893, 0x00000922,
+} // Size: 160 bytes
 
-const fa_IRData string = "" + // Size: 2048 bytes
+const fa_IRData string = "" + // Size: 2338 bytes
 	"\x02ℹ️ درباره ما\x02⚙️ تنظیمات\x02🔗 دریافت لینک پیام\x02سلام 👋، به *بات " +
 	"چت ناشناس* خوش اومدی!🥰\x0a\x0aاینجا میتونی لینک چت ناشناس بسازی و بقیه " +
 	"بدون اینکه یوزرنیم تو رو بدونن بهت پیام بدن😻😻.\x0a\x0aفقط کافیه روی دکم" +
@@ -128,7 +141,9 @@ const fa_IRData string = "" + // Size: 2048 bytes
 	"⛔\x02کاربری که میخوای بهش پیام بفرستی بلاکت کرده! 🔒😿\x02💬 پاسخ\x02🔒 بل" +
 	"اک\x02🚨 گزارش\x02دریافت کننده پیام نوع پیامی که میخوای بهش بفرستی رو مح" +
 	"دود کرده یا این نوع توسط بات پشتیبانی نمیشه. 🔒🥹\x02پیامت با موفقیت ارسا" +
-	"ل شد! 📨😍\x02پیامتو بفرست ✏️:\x02🔓 آنبلاک\x02با موفقیت بلاک شد! 🔒✅\x02با" +
-	" موفقیت آنبلاک شد! 🔓✅"
+	"ل شد! 📨😍\x02پیامتو بفرست ✏️:\x02🔴 مسدود\x02🟢 رفع مسدودیت\x02با موفقیت م" +
+	"سدود شد! 🔴✅\x02با موفقیت از مسدودیت خارج شد! 🟢✅\x02🔓 آنبلاک\x02با موفقی" +
+	"ت بلاک شد! 🔒✅\x02با موفقیت آنبلاک شد! 🔓✅\x02ادمین بات شما رو مسدود کرده" +
+	" و نمی تونید از این به بعد از بات استفاده کنید! ⛔❌🔴"
 
-	// Total table size 3612 bytes (3KiB); checksum: AF2DA132
+	// Total table size 4093 bytes (3KiB); checksum: 94649F2B

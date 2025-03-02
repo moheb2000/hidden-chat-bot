@@ -7,6 +7,7 @@ import (
 // newBot creates a new bot with some options, add handlers to it and return the newly created bot and an error if available
 func (app *application) newBot(token string) (*bot.Bot, error) {
 	opts := []bot.Option{
+		bot.WithMiddlewares(app.addUserInFirstStart, app.checkIfUserIsBanned),
 		bot.WithDefaultHandler(app.send),
 		bot.WithCallbackQueryDataHandler("reply_", bot.MatchTypePrefix, app.reply),
 		// bot.WithCallbackQueryDataHandler("toggle_permission_", bot.MatchTypePrefix, app.toggleTypePermission),
@@ -27,6 +28,8 @@ func (app *application) newBot(token string) (*bot.Bot, error) {
 	b.RegisterHandler(bot.HandlerTypeMessageText, app.config.locale.Translate("🔗 Get Hidden Link"), bot.MatchTypeExact, app.getHiddenLink)
 	b.RegisterHandler(bot.HandlerTypeCallbackQueryData, "block_", bot.MatchTypePrefix, app.block)
 	b.RegisterHandler(bot.HandlerTypeCallbackQueryData, "unblock_", bot.MatchTypePrefix, app.block)
-	b.RegisterHandler(bot.HandlerTypeCallbackQueryData, "report", bot.MatchTypeExact, report)
+	b.RegisterHandler(bot.HandlerTypeCallbackQueryData, "report_", bot.MatchTypePrefix, app.report)
+	b.RegisterHandler(bot.HandlerTypeCallbackQueryData, "ban_", bot.MatchTypePrefix, app.ban)
+	b.RegisterHandler(bot.HandlerTypeCallbackQueryData, "unban_", bot.MatchTypePrefix, app.ban)
 	return b, nil
 }

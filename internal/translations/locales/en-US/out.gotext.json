@@ -177,6 +177,34 @@
             "fuzzy": true
         },
         {
+            "id": "🔴 Ban",
+            "message": "🔴 Ban",
+            "translation": "🔴 Ban",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "🟢 Unban",
+            "message": "🟢 Unban",
+            "translation": "🟢 Unban",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Banned succesfully! 🔴✅",
+            "message": "Banned succesfully! 🔴✅",
+            "translation": "Banned succesfully! 🔴✅",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Unbanned successfully! 🟢✅",
+            "message": "Unbanned successfully! 🟢✅",
+            "translation": "Unbanned successfully! 🟢✅",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
             "id": "🔓 Unblock",
             "message": "🔓 Unblock",
             "translation": "🔓 Unblock",
@@ -194,6 +222,13 @@
             "id": "Unblocked successfully! 🔓✅",
             "message": "Unblocked successfully! 🔓✅",
             "translation": "Unblocked successfully! 🔓✅",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "You are banned by bot's admin and you can't use bot anymore! ⛔❌🔴",
+            "message": "You are banned by bot's admin and you can't use bot anymore! ⛔❌🔴",
+            "translation": "You are banned by bot's admin and you can't use bot anymore! ⛔❌🔴",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         }

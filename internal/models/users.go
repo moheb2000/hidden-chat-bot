@@ -25,6 +25,8 @@ type User struct {
 	IsSending   bool
 	RecipientID uuid.UUID
 	Blocks      []int64
+	IsBan       bool
+	IsAdmin     bool
 }
 
 // The UserModel type has access to an instance of application's database
@@ -59,12 +61,12 @@ func (m *UserModel) Exists(chatID int64) (bool, error) {
 
 // Get returns a user with the uuid token specified
 func (m *UserModel) Get(id uuid.UUID) (*User, error) {
-	stmt := `SELECT id, chat_id, is_sending, recipient_id, blocks FROM users
+	stmt := `SELECT id, chat_id, is_sending, recipient_id, blocks, is_ban, is_admin FROM users
 	WHERE id = $1`
 
 	u := &User{}
 
-	err := m.DB.QueryRow(stmt, id).Scan(&u.ID, &u.ChatID, &u.IsSending, &u.RecipientID, pq.Array(&u.Blocks))
+	err := m.DB.QueryRow(stmt, id).Scan(&u.ID, &u.ChatID, &u.IsSending, &u.RecipientID, pq.Array(&u.Blocks), &u.IsBan, &u.IsAdmin)
 	if err != nil {
 		return nil, err
 	}
@@ -74,12 +76,12 @@ func (m *UserModel) Get(id uuid.UUID) (*User, error) {
 
 // Get returns a user with the chat id in the telegram specified
 func (m *UserModel) GetBychatID(chatID int64) (*User, error) {
-	stmt := `SELECT id, chat_id, is_sending, recipient_id, blocks FROM users
+	stmt := `SELECT id, chat_id, is_sending, recipient_id, blocks, is_ban, is_admin FROM users
 	WHERE chat_id = $1`
 
 	u := &User{}
 
-	err := m.DB.QueryRow(stmt, chatID).Scan(&u.ID, &u.ChatID, &u.IsSending, &u.RecipientID, pq.Array(&u.Blocks))
+	err := m.DB.QueryRow(stmt, chatID).Scan(&u.ID, &u.ChatID, &u.IsSending, &u.RecipientID, pq.Array(&u.Blocks), &u.IsBan, &u.IsAdmin)
 	if err != nil {
 		return nil, err
 	}
@@ -179,6 +181,71 @@ func (m *UserModel) RemoveBlockArray(chatID int64, blockChatID int64) error {
 	WHERE chat_id = $2`
 
 	_, err := m.DB.Exec(stmt, blockChatID, chatID)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// MakeAdmin updates a user record and change is_admin to true
+func (m *UserModel) MakeAdmin(chatID int64) error {
+	stmt := `UPDATE users SET is_admin = TRUE
+	WHERE chat_id = $1`
+
+	_, err := m.DB.Exec(stmt, chatID)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// IsOneUser checks if there is only one record in the users table or not. This function is used in confunction with MakeAdmin to change is_admin field for the first user of the bot to true
+func (m *UserModel) IsOneUser() (bool, error) {
+	var isOneUser bool
+	stmt := "SELECT (COUNT(*) = 1) FROM users"
+	err := m.DB.QueryRow(stmt).Scan(&isOneUser)
+	if err != nil {
+		return false, nil
+	}
+
+	return isOneUser, nil
+}
+
+// GetAdmin returns the first user in database that has is_admin=true
+func (m *UserModel) GetAdmin() (*User, error) {
+	stmt := `SELECT id, chat_id, is_sending, recipient_id, blocks, is_ban, is_admin FROM users
+	WHERE is_admin = TRUE ORDER BY serial LIMIT 1`
+
+	u := &User{}
+
+	err := m.DB.QueryRow(stmt).Scan(&u.ID, &u.ChatID, &u.IsSending, &u.RecipientID, pq.Array(&u.Blocks), &u.IsBan, &u.IsAdmin)
+	if err != nil {
+		return nil, err
+	}
+
+	return u, nil
+}
+
+// Ban changes the is_ban field of a user to true
+func (m *UserModel) Ban(chatID int64) error {
+	err := m.changeBanState(chatID, true)
+	return err
+}
+
+// Unban changes the is_ban field of a user to false
+func (m *UserModel) Unban(chatID int64) error {
+	err := m.changeBanState(chatID, false)
+	return err
+}
+
+// changeBanState is a local helper function that changes the is_ban field to true/false and used by Ban and Unban functions
+func (m *UserModel) changeBanState(chatID int64, isBanning bool) error {
+	stmt := `UPDATE users SET is_ban = $1
+	WHERE chat_id = $2`
+
+	_, err := m.DB.Exec(stmt, isBanning, chatID)
 	if err != nil {
 		return err
 	}
