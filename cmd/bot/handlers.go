@@ -47,17 +47,23 @@ func (app *application) start(ctx context.Context, b *bot.Bot, update *models.Up
 	})
 }
 
-// getHiddenLink sends the anonymous link when the user clicks on this button
+// getHiddenLink sends the anonymous link when the user clicks on this button or when change hidden link callback query is sended
 func (app *application) getHiddenLink(ctx context.Context, b *bot.Bot, update *models.Update) {
+	var chatID int64
+	if update.CallbackQuery != nil {
+		chatID = update.CallbackQuery.Message.Message.Chat.ID
+	} else {
+		chatID = update.Message.Chat.ID
+	}
 	// Get the user by chat id in the telegram
-	u, err := app.users.GetBychatID(update.Message.Chat.ID)
+	u, err := app.users.GetBychatID(chatID)
 	if err != nil {
-		sendError(ctx, b, update.Message.Chat.ID, "There is a problem in our servers. Please wait a moment and try again...", err)
+		sendError(ctx, b, chatID, "There is a problem in our servers. Please wait a moment and try again...", err)
 		return
 	}
 
 	b.SendMessage(ctx, &bot.SendMessageParams{
-		ChatID: update.Message.Chat.ID,
+		ChatID: chatID,
 		Text:   fmt.Sprintf("t.me/hidden_chat_moheb2000_bot?start=%s", u.ID.String()),
 	})
 }
@@ -67,6 +73,7 @@ func (app *application) settings(ctx context.Context, b *bot.Bot, update *models
 	app.showSettings(ctx, b, update, false)
 }
 
+// backToSettings runs when the user clicks on back button in settings menu
 func (app *application) backToSettings(ctx context.Context, b *bot.Bot, update *models.Update) {
 	// This tells telegram that we are answering the callback query
 	b.AnswerCallbackQuery(ctx, &bot.AnswerCallbackQueryParams{
@@ -77,9 +84,13 @@ func (app *application) backToSettings(ctx context.Context, b *bot.Bot, update *
 	app.showSettings(ctx, b, update, true)
 }
 
+// showSettings is a helper function that shows the settings message
 func (app *application) showSettings(ctx context.Context, b *bot.Bot, update *models.Update, edit bool) {
 	ibm := &models.InlineKeyboardMarkup{
 		InlineKeyboard: [][]models.InlineKeyboardButton{
+			{
+				{Text: app.config.locale.Translate("🔗 Change Hidden Link"), CallbackData: "settings_change_hidden_link"},
+			},
 			{
 				{Text: app.config.locale.Translate("🚫 Message Restrictions"), CallbackData: "settings_allowed_types"},
 			},
@@ -102,6 +113,44 @@ func (app *application) showSettings(ctx context.Context, b *bot.Bot, update *mo
 			ReplyMarkup: ibm,
 		})
 	}
+}
+
+// settingsChangeLink shows a confirmation message to see if the user really wants to change the hidden chat link or not
+func (app *application) settingsChangeLink(ctx context.Context, b *bot.Bot, update *models.Update) {
+	// This tells telegram that we are answering the callback query
+	b.AnswerCallbackQuery(ctx, &bot.AnswerCallbackQueryParams{
+		CallbackQueryID: update.CallbackQuery.ID,
+		ShowAlert:       false,
+	})
+
+	ibm := &models.InlineKeyboardMarkup{
+		InlineKeyboard: [][]models.InlineKeyboardButton{
+			{
+				{Text: app.config.locale.Translate("Yes, I'm sure ✅"), CallbackData: "settings_change_hidden_link_accept"},
+				{Text: app.config.locale.Translate("Cancel ❌"), CallbackData: "settings_change_hidden_link_cancel"},
+			},
+		},
+	}
+
+	b.SendMessage(ctx, &bot.SendMessageParams{
+		ChatID:      update.CallbackQuery.Message.Message.Chat.ID,
+		Text:        app.config.locale.Translate("Are you sure you want change the hidden link? Your previous link will be invalid! 🚨🚫"),
+		ReplyMarkup: ibm,
+	})
+}
+
+// settingsChangeLinkCancel runs when user clicks on cancel changing hidden chat link inline button and deleted the confirmation message
+func (app *application) settingsChangeLinkCancel(ctx context.Context, b *bot.Bot, update *models.Update) {
+	// This tells telegram that we are answering the callback query
+	b.AnswerCallbackQuery(ctx, &bot.AnswerCallbackQueryParams{
+		CallbackQueryID: update.CallbackQuery.ID,
+		ShowAlert:       false,
+	})
+
+	b.DeleteMessage(ctx, &bot.DeleteMessageParams{
+		ChatID:    update.CallbackQuery.Message.Message.Chat.ID,
+		MessageID: update.CallbackQuery.Message.Message.ID,
+	})
 }
 
 // settingsAllowedTypes runs when user clicks on set allowed message types inline button in settings page and change the settings message to the corresponding text

@@ -101,3 +101,25 @@ func (app *application) toggleTypePermission(next bot.HandlerFunc) bot.HandlerFu
 		next(ctx, b, update)
 	}
 }
+
+func (app *application) settingsChangeLinkAccept(next bot.HandlerFunc) bot.HandlerFunc {
+	return func(ctx context.Context, b *bot.Bot, update *models.Update) {
+		// This tells telegram that we are answering the callback query
+		b.AnswerCallbackQuery(ctx, &bot.AnswerCallbackQueryParams{
+			CallbackQueryID: update.CallbackQuery.ID,
+			ShowAlert:       false,
+		})
+
+		err := app.users.ChangeId(update.CallbackQuery.Message.Message.Chat.ID)
+		if err != nil {
+			return
+		}
+
+		b.DeleteMessage(ctx, &bot.DeleteMessageParams{
+			ChatID:    update.CallbackQuery.Message.Message.Chat.ID,
+			MessageID: update.CallbackQuery.Message.Message.ID,
+		})
+
+		next(ctx, b, update)
+	}
+}

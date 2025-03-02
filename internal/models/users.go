@@ -39,11 +39,7 @@ func (m *UserModel) Insert(chatID int64) error {
 	stmt := "INSERT INTO users (chat_id) VALUES ($1)"
 
 	_, err := m.DB.Exec(stmt, chatID)
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return err
 }
 
 // Exists checks if a user exists or not in the database records and returns a boolean value
@@ -105,11 +101,7 @@ func (m *UserModel) updateSendingState(chatID int64, isSending bool, recipientID
 	WHERE chat_id = $3`
 
 	_, err := m.DB.Exec(stmt, isSending, recipientID, chatID)
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return err
 }
 
 // GetAllowedTypes returns a struct that have all permission types for a single user.
@@ -155,11 +147,7 @@ func (m *UserModel) TogglePermission(chatID int64, per string) error {
 	}
 
 	_, err = m.DB.Exec(stmt, up, chatID)
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return err
 }
 
 // AddBlockArray adds a chat id to the blocks array in database
@@ -168,11 +156,7 @@ func (m *UserModel) AddBlockArray(chatID int64, blockChatID int64) error {
 	WHERE chat_id = $2`
 
 	_, err := m.DB.Exec(stmt, blockChatID, chatID)
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return err
 }
 
 // RemoveBlockArray removes a chat id to the blocks array in database
@@ -181,11 +165,7 @@ func (m *UserModel) RemoveBlockArray(chatID int64, blockChatID int64) error {
 	WHERE chat_id = $2`
 
 	_, err := m.DB.Exec(stmt, blockChatID, chatID)
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return err
 }
 
 // MakeAdmin updates a user record and change is_admin to true
@@ -194,11 +174,7 @@ func (m *UserModel) MakeAdmin(chatID int64) error {
 	WHERE chat_id = $1`
 
 	_, err := m.DB.Exec(stmt, chatID)
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return err
 }
 
 // IsOneUser checks if there is only one record in the users table or not. This function is used in confunction with MakeAdmin to change is_admin field for the first user of the bot to true
@@ -246,9 +222,14 @@ func (m *UserModel) changeBanState(chatID int64, isBanning bool) error {
 	WHERE chat_id = $2`
 
 	_, err := m.DB.Exec(stmt, isBanning, chatID)
-	if err != nil {
-		return err
-	}
+	return err
+}
 
-	return nil
+// ChangeId changes the id field to another random uuid
+func (m *UserModel) ChangeId(chatId int64) error {
+	stmt := `UPDATE users SET id = gen_random_uuid()
+	WHERE chat_id = $1`
+
+	_, err := m.DB.Exec(stmt, chatId)
+	return err
 }

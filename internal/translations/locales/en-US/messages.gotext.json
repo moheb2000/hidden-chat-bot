@@ -30,6 +30,13 @@
             "fuzzy": true
         },
         {
+            "id": "🔗 Change Hidden Link",
+            "message": "🔗 Change Hidden Link",
+            "translation": "🔗 Change Hidden Link",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
             "id": "🚫 Message Restrictions",
             "message": "🚫 Message Restrictions",
             "translation": "🚫 Message Restrictions",
@@ -40,6 +47,27 @@
             "id": "settings_message",
             "message": "settings_message",
             "translation": "Here is your account control center! 🛠️🪛🙆\n\nYou can change your hidden link 🔗, set allowed/disallowed message types ✅❌ and more! 😇",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Yes, I'm sure ✅",
+            "message": "Yes, I'm sure ✅",
+            "translation": "Yes, I'm sure ✅",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Cancel ❌",
+            "message": "Cancel ❌",
+            "translation": "Cancel ❌",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Are you sure you want change the hidden link? Your previous link will be invalid! 🚨🚫",
+            "message": "Are you sure you want change the hidden link? Your previous link will be invalid! 🚨🚫",
+            "translation": "Are you sure you want change the hidden link? Your previous link will be invalid! 🚨🚫",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
