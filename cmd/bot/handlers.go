@@ -46,16 +46,17 @@ func (app *application) start(ctx context.Context, b *bot.Bot, update *models.Up
 
 	// Modify this section to show the keyboard when starting the app no matter what command used
 	b.SendMessage(ctx, &bot.SendMessageParams{
-		ChatID: update.Message.Chat.ID,
-		Text:   "Hello, Welcome to this app!",
+		ChatID:    update.Message.Chat.ID,
+		Text:      app.config.locale.Translate("start_message"),
+		ParseMode: models.ParseModeMarkdownV1,
 		ReplyMarkup: models.ReplyKeyboardMarkup{
 			Keyboard: [][]models.KeyboardButton{
 				{
-					{Text: "Create hidden link"},
+					{Text: app.config.locale.Translate("🔗 Get Hidden Link")},
 				},
 				{
-					{Text: "Settings"},
-					{Text: "About"},
+					{Text: app.config.locale.Translate("⚙️ Settings")},
+					{Text: app.config.locale.Translate("ℹ️ About")},
 				},
 			},
 			ResizeKeyboard: true,
@@ -79,30 +80,30 @@ func (app *application) getHiddenLink(ctx context.Context, b *bot.Bot, update *m
 }
 
 // settings runs when the user clicks on the settings reply command and will show a message with inline buttons for managing user preferences
-func settings(ctx context.Context, b *bot.Bot, update *models.Update) {
-	showSettings(ctx, b, update, false)
+func (app *application) settings(ctx context.Context, b *bot.Bot, update *models.Update) {
+	app.showSettings(ctx, b, update, false)
 }
 
-func backToSettings(ctx context.Context, b *bot.Bot, update *models.Update) {
+func (app *application) backToSettings(ctx context.Context, b *bot.Bot, update *models.Update) {
 	// This tells telegram that we are answering the callback query
 	b.AnswerCallbackQuery(ctx, &bot.AnswerCallbackQueryParams{
 		CallbackQueryID: update.CallbackQuery.ID,
 		ShowAlert:       false,
 	})
 
-	showSettings(ctx, b, update, true)
+	app.showSettings(ctx, b, update, true)
 }
 
-func showSettings(ctx context.Context, b *bot.Bot, update *models.Update, edit bool) {
+func (app *application) showSettings(ctx context.Context, b *bot.Bot, update *models.Update, edit bool) {
 	ibm := &models.InlineKeyboardMarkup{
 		InlineKeyboard: [][]models.InlineKeyboardButton{
 			{
-				{Text: "Set Allowed Message Types", CallbackData: "settings_allowed_types"},
+				{Text: app.config.locale.Translate("🚫 Message Restrictions"), CallbackData: "settings_allowed_types"},
 			},
 		},
 	}
 
-	tm := "This is the settings page"
+	tm := app.config.locale.Translate("settings_message")
 
 	if !edit {
 		b.SendMessage(ctx, &bot.SendMessageParams{
@@ -144,7 +145,16 @@ func (app *application) settingsAllowedTypes(ctx context.Context, b *bot.Bot, up
 	// Loop over types of messages and set them allowed or disallowed based on database response
 	// TODO: I will change some logic here, so every two inline button be in the same row for more compact response.
 	typesBool := []bool{at.Text, at.Sticker, at.Gif, at.Photo, at.Video, at.Voice, at.Audio, at.Document}
-	typesString := []string{"Text", "Sticker", "Gif", "Photo", "Video", "Voice", "Audio", "Document"}
+	typesString := []string{
+		app.config.locale.Translate("Text"),
+		app.config.locale.Translate("Sticker"),
+		app.config.locale.Translate("Gif"),
+		app.config.locale.Translate("Photo"),
+		app.config.locale.Translate("Video"),
+		app.config.locale.Translate("Voice"),
+		app.config.locale.Translate("Audio"),
+		app.config.locale.Translate("Document"),
+	}
 	for i := range typesBool {
 		r := ""
 		if typesBool[i] {
@@ -164,7 +174,7 @@ func (app *application) settingsAllowedTypes(ctx context.Context, b *bot.Bot, up
 	// Add a button to back to the main settings message
 	ibm.InlineKeyboard = append(ibm.InlineKeyboard, []models.InlineKeyboardButton{
 		{
-			Text:         "Back",
+			Text:         app.config.locale.Translate("⬅️ Back"),
 			CallbackData: "back_to_settings",
 		},
 	})
@@ -172,16 +182,17 @@ func (app *application) settingsAllowedTypes(ctx context.Context, b *bot.Bot, up
 	b.EditMessageText(ctx, &bot.EditMessageTextParams{
 		ChatID:      update.CallbackQuery.Message.Message.Chat.ID,
 		MessageID:   update.CallbackQuery.Message.Message.ID,
-		Text:        "Edit message preferences",
+		Text:        app.config.locale.Translate("message_restrictions_settings_message"),
 		ReplyMarkup: ibm,
 	})
 }
 
 // about runs when the user clicks on the about reply command and will show the about text to the user
-func about(ctx context.Context, b *bot.Bot, update *models.Update) {
+func (app *application) about(ctx context.Context, b *bot.Bot, update *models.Update) {
 	b.SendMessage(ctx, &bot.SendMessageParams{
-		ChatID: update.Message.Chat.ID,
-		Text:   "This is the about page",
+		ChatID:    update.Message.Chat.ID,
+		Text:      app.config.locale.Translate("about_message"),
+		ParseMode: models.ParseModeMarkdownV1,
 	})
 }
 
@@ -198,7 +209,7 @@ func (app *application) send(ctx context.Context, b *bot.Bot, update *models.Upd
 	if !u.IsSending {
 		b.SendMessage(ctx, &bot.SendMessageParams{
 			ChatID: update.Message.Chat.ID,
-			Text:   "You are not in sending mode...",
+			Text:   app.config.locale.Translate("You are not in sending mode... ⛔"),
 		})
 
 		return
@@ -216,7 +227,7 @@ func (app *application) send(ctx context.Context, b *bot.Bot, update *models.Upd
 	if contains(ru.Blocks, update.Message.Chat.ID) {
 		b.SendMessage(ctx, &bot.SendMessageParams{
 			ChatID: update.Message.Chat.ID,
-			Text:   "You blocked by the user you're trying to send the message!",
+			Text:   app.config.locale.Translate("You blocked by the user you're trying to send the message! 🔒😿"),
 		})
 
 		return
@@ -233,11 +244,11 @@ func (app *application) send(ctx context.Context, b *bot.Bot, update *models.Upd
 	ibm := &models.InlineKeyboardMarkup{
 		InlineKeyboard: [][]models.InlineKeyboardButton{
 			{
-				{Text: "Reply", CallbackData: "reply_" + u.ID.String()},
+				{Text: app.config.locale.Translate("💬 Reply"), CallbackData: "reply_" + u.ID.String()},
 			},
 			{
-				{Text: "Block", CallbackData: "block_" + strconv.FormatInt(u.ChatID, 10)},
-				{Text: "Report", CallbackData: "report"},
+				{Text: app.config.locale.Translate("🔒 Block"), CallbackData: "block_" + strconv.FormatInt(u.ChatID, 10)},
+				{Text: app.config.locale.Translate("🚨 Report"), CallbackData: "report"},
 			},
 			{
 				// TODO: Add changing ad link in admin panel after implementing admin user
@@ -309,7 +320,7 @@ func (app *application) send(ctx context.Context, b *bot.Bot, update *models.Upd
 	} else {
 		b.SendMessage(ctx, &bot.SendMessageParams{
 			ChatID: update.Message.Chat.ID,
-			Text:   "Your message type is limited by reciever or isn't supported by this bot.",
+			Text:   app.config.locale.Translate("Your message type is limited by reciever or isn't supported by this bot. 🔒🥹"),
 		})
 
 		// We return here because we don't want to leave the sending state just becuase the message type is not supported by the bot
@@ -318,6 +329,11 @@ func (app *application) send(ctx context.Context, b *bot.Bot, update *models.Upd
 
 	// After sending the message, user will leave the sending state
 	app.users.LeaveSendingState(u.ChatID)
+
+	b.SendMessage(ctx, &bot.SendMessageParams{
+		ChatID: update.Message.Chat.ID,
+		Text:   app.config.locale.Translate("Your message sended successfully! 📨😍"),
+	})
 }
 
 func (app *application) reply(ctx context.Context, b *bot.Bot, update *models.Update) {
@@ -360,7 +376,7 @@ func (app *application) sendState(ctx context.Context, b *bot.Bot, message *mode
 	app.users.EnterSendingState(message.Chat.ID, recipientID)
 	b.SendMessage(ctx, &bot.SendMessageParams{
 		ChatID: message.Chat.ID,
-		Text:   "You can now send an anonymous message:",
+		Text:   app.config.locale.Translate("Send your message ✏️:"),
 	})
 }
 
@@ -442,10 +458,10 @@ func (app *application) block(ctx context.Context, b *bot.Bot, update *models.Up
 	// Change the block button based on block/unblock users
 	// TODO: This is hardcoded logic to change the inline button for blocking feature, but need to be replaced with a more generic approach
 	if isBlocking {
-		ibm.InlineKeyboard[1][0].Text = "Unblock"
+		ibm.InlineKeyboard[1][0].Text = app.config.locale.Translate("🔓 Unblock")
 		ibm.InlineKeyboard[1][0].CallbackData = "unblock_" + strings.Split(ibm.InlineKeyboard[1][0].CallbackData, "_")[1]
 	} else {
-		ibm.InlineKeyboard[1][0].Text = "Block"
+		ibm.InlineKeyboard[1][0].Text = app.config.locale.Translate("🔒 Block")
 		ibm.InlineKeyboard[1][0].CallbackData = "block_" + strings.Split(ibm.InlineKeyboard[1][0].CallbackData, "_")[1]
 	}
 
@@ -457,9 +473,9 @@ func (app *application) block(ctx context.Context, b *bot.Bot, update *models.Up
 
 	t := ""
 	if isBlocking {
-		t = "Blocked succesfully"
+		t = app.config.locale.Translate("Blocked succesfully! 🔒✅")
 	} else {
-		t = "Unblocked successfully"
+		t = app.config.locale.Translate("Unblocked successfully! 🔓✅")
 	}
 
 	b.SendMessage(ctx, &bot.SendMessageParams{

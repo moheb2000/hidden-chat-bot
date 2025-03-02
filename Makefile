@@ -4,6 +4,10 @@ include .envrc
 run/bot:
 	go run ./cmd/bot
 
+.PHONY: run/bot/fa
+run/bot/fa:
+	go run ./cmd/bot -locale=fa-ir
+
 .PHONY: build/bot
 build/bot:
 	@echo 'Building cmd/bot'

@@ -1,0 +1,146 @@
+{
+    "language": "fa-IR",
+    "messages": [
+        {
+            "id": "ℹ️ About",
+            "message": "ℹ️ About",
+            "translation": "ℹ️ درباره ما"
+        },
+        {
+            "id": "⚙️ Settings",
+            "message": "⚙️ Settings",
+            "translation": "⚙️ تنظیمات"
+        },
+        {
+            "id": "🔗 Get Hidden Link",
+            "message": "🔗 Get Hidden Link",
+            "translation": "🔗 دریافت لینک پیام"
+        },
+        {
+            "id": "start_message",
+            "message": "start_message",
+            "translation": "سلام 👋، به *بات چت ناشناس* خوش اومدی!🥰\n\nاینجا میتونی لینک چت ناشناس بسازی و بقیه بدون اینکه یوزرنیم تو رو بدونن بهت پیام بدن😻😻.\n\nفقط کافیه روی دکمه *«🔗 دریافت لینک پیام»* کلیک کنی و لینکتو بگذاری توی شبکه های اجتماعی تا شروع کنی به دریافت پیام های شگفت انگیز بقیه👻🤡🙈!"
+        },
+        {
+            "id": "🚫 Message Restrictions",
+            "message": "🚫 Message Restrictions",
+            "translation": "🚫 محدودیت های پیام"
+        },
+        {
+            "id": "settings_message",
+            "message": "settings_message",
+            "translation": "اینجا تنظیمات اکانت توئه! 🛠️🪛🙆\n\n میتونی لینک پیامتو تغییر بدی 🔗، مشخص کنی چه پیام هایی برات بیان یا نیان ✅❌ و خیلی چیزای بیشتر! 😇"
+        },
+        {
+            "id": "Text",
+            "message": "Text",
+            "translation": "متن"
+        },
+        {
+            "id": "Sticker",
+            "message": "Sticker",
+            "translation": "استیکر"
+        },
+        {
+            "id": "Gif",
+            "message": "Gif",
+            "translation": "گیف"
+        },
+        {
+            "id": "Photo",
+            "message": "Photo",
+            "translation": "عکس"
+        },
+        {
+            "id": "Video",
+            "message": "Video",
+            "translation": "فیلم"
+        },
+        {
+            "id": "Voice",
+            "message": "Voice",
+            "translation": "ویس"
+        },
+        {
+            "id": "Audio",
+            "message": "Audio",
+            "translation": "صدا"
+        },
+        {
+            "id": "Document",
+            "message": "Document",
+            "translation": "فایل"
+        },
+        {
+            "id": "⬅️ Back",
+            "message": "⬅️ Back",
+            "translation": "➡️ بازگشت"
+        },
+        {
+            "id": "message_restrictions_settings_message",
+            "message": "message_restrictions_settings_message",
+            "translation": "اینجا میتونی مشخص کنی چه پیام هایی دوست داری که از بقیه دریافت کنی یا نکنی! 💯"
+        },
+        {
+            "id": "about_message",
+            "message": "about_message",
+            "translation": "*لینک چت ناشناس* بساز و بدون اینکه یوزرنیمت رو به بقیه نشون بدی چت کن. 🔒\nلینکتو منتشر کن، مخفی بمون و از چت ناشناس لذت ببر. 💬\nدر حالی که راحت چت می کنی، اینکه کی هستی مخفی می مونه. 👻\n\nبیا چتاتو امن و جالب کنیم! 🤖✨🎉"
+        },
+        {
+            "id": "You are not in sending mode... ⛔",
+            "message": "You are not in sending mode... ⛔",
+            "translation": "شما در وضعیت ارسال پیام قرار ندارید... ⛔"
+        },
+        {
+            "id": "You blocked by the user you're trying to send the message! 🔒😿",
+            "message": "You blocked by the user you're trying to send the message! 🔒😿",
+            "translation": "کاربری که میخوای بهش پیام بفرستی بلاکت کرده! 🔒😿"
+        },
+        {
+            "id": "💬 Reply",
+            "message": "💬 Reply",
+            "translation": "💬 پاسخ"
+        },
+        {
+            "id": "🔒 Block",
+            "message": "🔒 Block",
+            "translation": "🔒 بلاک"
+        },
+        {
+            "id": "🚨 Report",
+            "message": "🚨 Report",
+            "translation": "🚨 گزارش"
+        },
+        {
+            "id": "Your message type is limited by reciever or isn't supported by this bot. 🔒🥹",
+            "message": "Your message type is limited by reciever or isn't supported by this bot. 🔒🥹",
+            "translation": "دریافت کننده پیام نوع پیامی که میخوای بهش بفرستی رو محدود کرده یا این نوع توسط بات پشتیبانی نمیشه. 🔒🥹"
+        },
+        {
+            "id": "Your message sended successfully! 📨😍",
+            "message": "Your message sended successfully! 📨😍",
+            "translation": "پیامت با موفقیت ارسال شد! 📨😍"
+        },
+        {
+            "id": "Send your message ✏️:",
+            "message": "Send your message ✏️:",
+            "translation": "پیامتو بفرست ✏️:"
+        },
+        {
+            "id": "🔓 Unblock",
+            "message": "🔓 Unblock",
+            "translation": "🔓 آنبلاک"
+        },
+        {
+            "id": "Blocked succesfully! 🔒✅",
+            "message": "Blocked succesfully! 🔒✅",
+            "translation": "با موفقیت بلاک شد! 🔒✅"
+        },
+        {
+            "id": "Unblocked successfully! 🔓✅",
+            "message": "Unblocked successfully! 🔓✅",
+            "translation": "با موفقیت آنبلاک شد! 🔓✅"
+        }
+    ]
+}
+

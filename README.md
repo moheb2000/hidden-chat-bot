@@ -31,6 +31,10 @@ For running the bot in development mode, run:
 ```
 make run/bot
 ```
+Or this for persian locale:
+```
+make run/bot/fa
+```
 And for building the bot and getting an executable file, run:
 ```
 make build/bot

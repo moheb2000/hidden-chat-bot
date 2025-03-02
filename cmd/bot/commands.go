@@ -19,12 +19,12 @@ func (app *application) newBot(token string) (*bot.Bot, error) {
 
 	// Register handlers
 	b.RegisterHandler(bot.HandlerTypeMessageText, "/start", bot.MatchTypePrefix, app.start)
-	b.RegisterHandler(bot.HandlerTypeMessageText, "About", bot.MatchTypeExact, about)
-	b.RegisterHandler(bot.HandlerTypeMessageText, "Settings", bot.MatchTypeExact, settings)
+	b.RegisterHandler(bot.HandlerTypeMessageText, app.config.locale.Translate("ℹ️ About"), bot.MatchTypeExact, app.about)
+	b.RegisterHandler(bot.HandlerTypeMessageText, app.config.locale.Translate("⚙️ Settings"), bot.MatchTypeExact, app.settings)
 	b.RegisterHandler(bot.HandlerTypeCallbackQueryData, "settings_allowed_types", bot.MatchTypeExact, app.settingsAllowedTypes)
 	b.RegisterHandler(bot.HandlerTypeCallbackQueryData, "toggle_permission_", bot.MatchTypePrefix, app.settingsAllowedTypes, app.toggleTypePermission)
-	b.RegisterHandler(bot.HandlerTypeCallbackQueryData, "back_to_settings", bot.MatchTypeExact, backToSettings)
-	b.RegisterHandler(bot.HandlerTypeMessageText, "Create hidden link", bot.MatchTypeExact, app.getHiddenLink)
+	b.RegisterHandler(bot.HandlerTypeCallbackQueryData, "back_to_settings", bot.MatchTypeExact, app.backToSettings)
+	b.RegisterHandler(bot.HandlerTypeMessageText, app.config.locale.Translate("🔗 Get Hidden Link"), bot.MatchTypeExact, app.getHiddenLink)
 	b.RegisterHandler(bot.HandlerTypeCallbackQueryData, "block_", bot.MatchTypePrefix, app.block)
 	b.RegisterHandler(bot.HandlerTypeCallbackQueryData, "unblock_", bot.MatchTypePrefix, app.block)
 	b.RegisterHandler(bot.HandlerTypeCallbackQueryData, "report", bot.MatchTypeExact, report)
