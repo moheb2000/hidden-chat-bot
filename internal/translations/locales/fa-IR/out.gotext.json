@@ -112,6 +112,11 @@
             "translation": "شما در وضعیت ارسال پیام قرار ندارید... ⛔"
         },
         {
+            "id": "The user you trying to send this message to, changes the hidden link. Maybe you could ask the user to get the new one! ⚠️",
+            "message": "The user you trying to send this message to, changes the hidden link. Maybe you could ask the user to get the new one! ⚠️",
+            "translation": "کاربری که میخوای بهش پیام بفرستی، لینک پیامشو عوض کرده. شاید بتونی دوباره ازش بخوای تا لینک جدیدو بهت بده! ⚠️"
+        },
+        {
             "id": "You blocked by the user you're trying to send the message! 🔒😿",
             "message": "You blocked by the user you're trying to send the message! 🔒😿",
             "translation": "کاربری که میخوای بهش پیام بفرستی بلاکت کرده! 🔒😿"
@@ -140,6 +145,11 @@
             "id": "Your message sended successfully! 📨😍",
             "message": "Your message sended successfully! 📨😍",
             "translation": "پیامت با موفقیت ارسال شد! 📨😍"
+        },
+        {
+            "id": "This link is not valid. Maybe you need to contact somehow to the link's owner and tell this problem! ⚠️",
+            "message": "This link is not valid. Maybe you need to contact somehow to the link's owner and tell this problem! ⚠️",
+            "translation": "این لینک معتبر نیست. شاید لازم باشه یه جوری به صاحب لینک، این مشکلو بگی! ⚠️"
         },
         {
             "id": "Send your message ✏️:",
@@ -180,6 +190,11 @@
             "id": "Unblocked successfully! 🔓✅",
             "message": "Unblocked successfully! 🔓✅",
             "translation": "با موفقیت آنبلاک شد! 🔓✅"
+        },
+        {
+            "id": "There is a problem in our servers. Please be patient and try later! ⚠️",
+            "message": "There is a problem in our servers. Please be patient and try later! ⚠️",
+            "translation": "یه مشکلی توی سرورها به وجود اومده. لطفا صبور باش و بعدا دوباره امتحان کن! ⚠️"
         },
         {
             "id": "You are banned by bot's admin and you can't use bot anymore! ⛔❌🔴",

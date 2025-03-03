@@ -156,6 +156,13 @@
             "fuzzy": true
         },
         {
+            "id": "The user you trying to send this message to, changes the hidden link. Maybe you could ask the user to get the new one! ⚠️",
+            "message": "The user you trying to send this message to, changes the hidden link. Maybe you could ask the user to get the new one! ⚠️",
+            "translation": "The user you trying to send this message to, changes the hidden link. Maybe you could ask the user to get the new one! ⚠️",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
             "id": "You blocked by the user you're trying to send the message! 🔒😿",
             "message": "You blocked by the user you're trying to send the message! 🔒😿",
             "translation": "You blocked by the user you're trying to send the message! 🔒😿",
@@ -194,6 +201,13 @@
             "id": "Your message sended successfully! 📨😍",
             "message": "Your message sended successfully! 📨😍",
             "translation": "Your message sended successfully! 📨😍",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "This link is not valid. Maybe you need to contact somehow to the link's owner and tell this problem! ⚠️",
+            "message": "This link is not valid. Maybe you need to contact somehow to the link's owner and tell this problem! ⚠️",
+            "translation": "This link is not valid. Maybe you need to contact somehow to the link's owner and tell this problem! ⚠️",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
@@ -250,6 +264,13 @@
             "id": "Unblocked successfully! 🔓✅",
             "message": "Unblocked successfully! 🔓✅",
             "translation": "Unblocked successfully! 🔓✅",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "There is a problem in our servers. Please be patient and try later! ⚠️",
+            "message": "There is a problem in our servers. Please be patient and try later! ⚠️",
+            "translation": "There is a problem in our servers. Please be patient and try later! ⚠️",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },

@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"strings"
 
 	"github.com/go-telegram/bot"
@@ -21,7 +20,7 @@ func (app *application) addUserInFirstStart(next bot.HandlerFunc) bot.HandlerFun
 
 		exists, err := app.users.Exists(chatID)
 		if err != nil {
-			sendError(ctx, b, chatID, "There is a problem in our servers. Please wait a moment and try again...", err)
+			app.sendServerError(ctx, b, chatID, err)
 			return
 		}
 
@@ -31,21 +30,24 @@ func (app *application) addUserInFirstStart(next bot.HandlerFunc) bot.HandlerFun
 			return
 		}
 
+		// All of the code below runs if the user didn't exist in the database for the first time:
 		// Insert new user to the database
 		err = app.users.Insert(update.Message.Chat.ID)
 		if err != nil {
-			sendError(ctx, b, update.Message.Chat.ID, "There is a problem in our servers. Please wait a moment and try again...", err)
+			app.sendServerError(ctx, b, chatID, err)
 			return
 		}
 
 		isOneUser, err := app.users.IsOneUser()
 		if err != nil {
+			app.sendServerError(ctx, b, chatID, err)
 			return
 		}
 
 		if isOneUser {
 			err = app.users.MakeAdmin(chatID)
 			if err != nil {
+				app.sendServerError(ctx, b, chatID, err)
 				return
 			}
 		}
@@ -83,9 +85,10 @@ func (app *application) checkIfUserIsBanned(next bot.HandlerFunc) bot.HandlerFun
 			chatID = update.Message.Chat.ID
 		}
 
+		// Becuase checkIfUserIsBanned is the second middleware in chain, if there is an error in getting user by chat_id, it will not be a not found error, Because we check it in addUserInFirstStart middleware to the database.
 		u, err := app.users.GetBychatID(chatID)
 		if err != nil {
-			fmt.Println(err)
+			app.sendServerError(ctx, b, chatID, err)
 			return
 		}
 
@@ -135,6 +138,7 @@ func (app *application) settingsChangeLinkAccept(next bot.HandlerFunc) bot.Handl
 
 		err := app.users.ChangeId(update.CallbackQuery.Message.Message.Chat.ID)
 		if err != nil {
+			app.sendServerError(ctx, b, update.CallbackQuery.Message.Message.Chat.ID, err)
 			return
 		}
 

@@ -60,7 +60,7 @@ func (app *application) getHiddenLink(ctx context.Context, b *bot.Bot, update *m
 	// Get the user by chat id in the telegram
 	u, err := app.users.GetBychatID(chatID)
 	if err != nil {
-		sendError(ctx, b, chatID, "There is a problem in our servers. Please wait a moment and try again...", err)
+		app.sendServerError(ctx, b, chatID, err)
 		return
 	}
 
@@ -166,8 +166,7 @@ func (app *application) settingsAllowedTypes(ctx context.Context, b *bot.Bot, up
 	// Get allowed types from database
 	at, err := app.users.GetAllowedTypes(update.CallbackQuery.Message.Message.Chat.ID)
 	if err != nil {
-		sendError(ctx, b, update.Message.Chat.ID, "There is a problem in our servers. Please wait a moment and try again...", err)
-
+		app.sendServerError(ctx, b, update.CallbackQuery.Message.Message.Chat.ID, err)
 		return
 	}
 
@@ -235,7 +234,7 @@ func (app *application) send(ctx context.Context, b *bot.Bot, update *models.Upd
 	// Get user from database
 	u, err := app.users.GetBychatID(update.Message.Chat.ID)
 	if err != nil {
-		sendError(ctx, b, update.Message.Chat.ID, "There is a problem in our servers. Please wait a moment and try again...", err)
+		app.sendServerError(ctx, b, update.Message.Chat.ID, err)
 		return
 	}
 
@@ -252,8 +251,13 @@ func (app *application) send(ctx context.Context, b *bot.Bot, update *models.Upd
 	// Get the recipient user from the database
 	ru, err := app.users.Get(u.RecipientID)
 	if err != nil {
-		sendError(ctx, b, update.Message.Chat.ID, "There is a problem in our servers. Please wait a moment and try again...", err)
+		if errors.Is(err, sql.ErrNoRows) {
+			sendError(ctx, b, update.Message.Chat.ID, app.config.locale.Translate("The user you trying to send this message to, changes the hidden link. Maybe you could ask the user to get the new one! ⚠️"), err)
+			app.users.LeaveSendingState(u.ChatID)
+			return
+		}
 
+		app.sendServerError(ctx, b, update.Message.Chat.ID, err)
 		return
 	}
 
@@ -269,7 +273,7 @@ func (app *application) send(ctx context.Context, b *bot.Bot, update *models.Upd
 
 	at, err := app.users.GetAllowedTypes(ru.ChatID)
 	if err != nil {
-		sendError(ctx, b, update.Message.Chat.ID, "There is a problem in our servers. Please wait a moment and try again...", err)
+		app.sendServerError(ctx, b, update.Message.Chat.ID, err)
 
 		return
 	}
@@ -392,7 +396,7 @@ func (app *application) sendState(ctx context.Context, b *bot.Bot, message *mode
 	recipientID, err := uuid.Parse(rIDString)
 	// Check if the link is valid
 	if err != nil {
-		sendError(ctx, b, message.Chat.ID, "This link is not valid. Maybe you need to contact somehow to the link's owner and tell this problem", err)
+		sendError(ctx, b, message.Chat.ID, app.config.locale.Translate("This link is not valid. Maybe you need to contact somehow to the link's owner and tell this problem! ⚠️"), err)
 		return
 	}
 
@@ -400,9 +404,9 @@ func (app *application) sendState(ctx context.Context, b *bot.Bot, message *mode
 	_, err = app.users.Get(recipientID)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
-			sendError(ctx, b, message.Chat.ID, "This link is not valid. Maybe you need to contact somehow to the link's owner and tell this problem", err)
+			sendError(ctx, b, message.Chat.ID, app.config.locale.Translate("This link is not valid. Maybe you need to contact somehow to the link's owner and tell this problem! ⚠️"), err)
 		} else {
-			sendError(ctx, b, message.Chat.ID, "There is a problem in our servers. Please wait a moment and try again...", err)
+			app.sendServerError(ctx, b, message.Chat.ID, err)
 		}
 
 		return
@@ -438,6 +442,7 @@ func (app *application) report(ctx context.Context, b *bot.Bot, update *models.U
 
 	ad, err := app.users.GetAdmin()
 	if err != nil {
+		app.sendServerError(ctx, b, update.CallbackQuery.Message.Message.Chat.ID, err)
 		return
 	}
 
@@ -460,7 +465,7 @@ func (app *application) ban(ctx context.Context, b *bot.Bot, update *models.Upda
 	bl := strings.Split(update.CallbackQuery.Data, "_")
 
 	if len(bl) != 2 {
-		sendError(ctx, b, update.Message.Chat.ID, "There is a problem in our servers. Please wait a moment and try again...", nil)
+		app.sendServerError(ctx, b, update.CallbackQuery.Message.Message.Chat.ID, nil)
 		return
 	}
 
@@ -473,7 +478,7 @@ func (app *application) ban(ctx context.Context, b *bot.Bot, update *models.Upda
 	// Convert chat id from string to int64
 	banChatID, err := strconv.ParseInt(bl[1], 10, 64)
 	if err != nil {
-		sendError(ctx, b, update.Message.Chat.ID, "There is a problem in our servers. Please wait a moment and try again...", err)
+		app.sendServerError(ctx, b, update.CallbackQuery.Message.Message.Chat.ID, err)
 		return
 	}
 
@@ -484,7 +489,7 @@ func (app *application) ban(ctx context.Context, b *bot.Bot, update *models.Upda
 		err = app.users.Unban(banChatID)
 	}
 	if err != nil {
-		sendError(ctx, b, update.Message.Chat.ID, "There is a problem in our servers. Please wait a moment and try again...", err)
+		app.sendServerError(ctx, b, update.CallbackQuery.Message.Message.Chat.ID, err)
 		return
 	}
 
@@ -538,7 +543,7 @@ func (app *application) block(ctx context.Context, b *bot.Bot, update *models.Up
 	bl := strings.Split(update.CallbackQuery.Data, "_")
 
 	if len(bl) != 2 {
-		sendError(ctx, b, update.Message.Chat.ID, "There is a problem in our servers. Please wait a moment and try again...", nil)
+		app.sendServerError(ctx, b, update.CallbackQuery.Message.Message.Chat.ID, nil)
 		return
 	}
 
@@ -551,7 +556,7 @@ func (app *application) block(ctx context.Context, b *bot.Bot, update *models.Up
 	// Convert chat id from string to int64
 	blockChatID, err := strconv.ParseInt(bl[1], 10, 64)
 	if err != nil {
-		sendError(ctx, b, update.Message.Chat.ID, "There is a problem in our servers. Please wait a moment and try again...", err)
+		app.sendServerError(ctx, b, update.CallbackQuery.Message.Message.Chat.ID, err)
 		return
 	}
 
@@ -562,7 +567,7 @@ func (app *application) block(ctx context.Context, b *bot.Bot, update *models.Up
 		err = app.users.RemoveBlockArray(update.CallbackQuery.Message.Message.Chat.ID, blockChatID)
 	}
 	if err != nil {
-		sendError(ctx, b, update.Message.Chat.ID, "There is a problem in our servers. Please wait a moment and try again...", err)
+		app.sendServerError(ctx, b, update.CallbackQuery.Message.Message.Chat.ID, err)
 		return
 	}
 
