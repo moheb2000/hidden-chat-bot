@@ -15,6 +15,7 @@ import (
 )
 
 type config struct {
+	name   string
 	locale localizer.Localizer
 }
 
@@ -25,7 +26,7 @@ type application struct {
 
 // main creates a new bot and starts it
 func main() {
-	// name := flag.String("name", "Hidden Chat Bot", "The name of the bot")
+	name := flag.String("name", "Hidden Chat Bot", "The name of the bot")
 	locale := flag.String("locale", "en-us", "The locale used for the translation of the bot")
 	flag.Parse()
 
@@ -49,6 +50,7 @@ func main() {
 	app := &application{
 		users: &models.UserModel{DB: db},
 		config: &config{
+			name:   *name,
 			locale: l,
 		},
 	}

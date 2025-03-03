@@ -2,11 +2,7 @@ include .envrc
 
 .PHONY: run/bot
 run/bot:
-	go run ./cmd/bot
-
-.PHONY: run/bot/fa
-run/bot/fa:
-	go run ./cmd/bot -locale=fa-ir
+	go run ./cmd/bot -name="${name}" -locale=${locale}
 
 .PHONY: build/bot
 build/bot:

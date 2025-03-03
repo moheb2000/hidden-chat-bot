@@ -25,8 +25,18 @@
         {
             "id": "start_message",
             "message": "start_message",
-            "translation": "Hello 👋, Welcome to *Hidden Chat Bot*!🥰\n\nYou can create hidden chat links and others can send you messages without knowing your username😻😻.\n\nJust click on *\"🔗 Get Hidden Link\"* button and paste your link in your social media to start recieving wonderful messages👻🤡🙈!",
+            "translation": "Hello 👋, Welcome to *{Name}*!🥰\n\nYou can create hidden chat links and others can send you messages without knowing your username😻😻.\n\nJust click on *\"🔗 Get Hidden Link\"* button and paste your link in your social media to start recieving wonderful messages👻🤡🙈!",
             "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "Name",
+                    "string": "%[1]v",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "app.config.name"
+                }
+            ],
             "fuzzy": true
         },
         {

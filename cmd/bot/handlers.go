@@ -43,7 +43,7 @@ func (app *application) start(ctx context.Context, b *bot.Bot, update *models.Up
 
 	b.SendMessage(ctx, &bot.SendMessageParams{
 		ChatID:      update.Message.Chat.ID,
-		Text:        app.config.locale.Translate("start_message"),
+		Text:        app.config.locale.Translate("start_message", app.config.name),
 		ParseMode:   models.ParseModeMarkdownV1,
 		ReplyMarkup: rkm,
 	})

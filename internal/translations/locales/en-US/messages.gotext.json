@@ -1,285 +1,295 @@
 {
-    "language": "en-US",
-    "messages": [
+  "language": "en-US",
+  "messages": [
+    {
+      "id": "ℹ️ About",
+      "message": "ℹ️ About",
+      "translation": "ℹ️ About",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "⚙️ Settings",
+      "message": "⚙️ Settings",
+      "translation": "⚙️ Settings",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "🔗 Get Hidden Link",
+      "message": "🔗 Get Hidden Link",
+      "translation": "🔗 Get Hidden Link",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "start_message",
+      "message": "start_message",
+      "translation": "Hello 👋, Welcome to *{Name}*!🥰\n\nYou can create hidden chat links and others can send you messages without knowing your username😻😻.\n\nJust click on *\"🔗 Get Hidden Link\"* button and paste your link in your social media to start recieving wonderful messages👻🤡🙈!",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
         {
-            "id": "ℹ️ About",
-            "message": "ℹ️ About",
-            "translation": "ℹ️ About",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "⚙️ Settings",
-            "message": "⚙️ Settings",
-            "translation": "⚙️ Settings",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "🔗 Get Hidden Link",
-            "message": "🔗 Get Hidden Link",
-            "translation": "🔗 Get Hidden Link",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "start_message",
-            "message": "start_message",
-            "translation": "Hello 👋, Welcome to *Hidden Chat Bot*!🥰\n\nYou can create hidden chat links and others can send you messages without knowing your username😻😻.\n\nJust click on *\"🔗 Get Hidden Link\"* button and paste your link in your social media to start recieving wonderful messages👻🤡🙈!",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "🔗 Change Hidden Link",
-            "message": "🔗 Change Hidden Link",
-            "translation": "🔗 Change Hidden Link",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "🚫 Message Restrictions",
-            "message": "🚫 Message Restrictions",
-            "translation": "🚫 Message Restrictions",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "settings_message",
-            "message": "settings_message",
-            "translation": "Here is your account control center! 🛠️🪛🙆\n\nYou can change your hidden link 🔗, set allowed/disallowed message types ✅❌ and more! 😇",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "Yes, I'm sure ✅",
-            "message": "Yes, I'm sure ✅",
-            "translation": "Yes, I'm sure ✅",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "Cancel ❌",
-            "message": "Cancel ❌",
-            "translation": "Cancel ❌",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "Are you sure you want change the hidden link? Your previous link will be invalid! 🚨🚫",
-            "message": "Are you sure you want change the hidden link? Your previous link will be invalid! 🚨🚫",
-            "translation": "Are you sure you want change the hidden link? Your previous link will be invalid! 🚨🚫",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "Text",
-            "message": "Text",
-            "translation": "Text",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "Sticker",
-            "message": "Sticker",
-            "translation": "Sticker",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "Gif",
-            "message": "Gif",
-            "translation": "Gif",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "Photo",
-            "message": "Photo",
-            "translation": "Photo",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "Video",
-            "message": "Video",
-            "translation": "Video",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "Voice",
-            "message": "Voice",
-            "translation": "Voice",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "Audio",
-            "message": "Audio",
-            "translation": "Audio",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "Document",
-            "message": "Document",
-            "translation": "Document",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "⬅️ Back",
-            "message": "⬅️ Back",
-            "translation": "⬅️ Back",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "message_restrictions_settings_message",
-            "message": "message_restrictions_settings_message",
-            "translation": "You can set what type of messages you want to recieve or not from others! 💯",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "about_message",
-            "message": "about_message",
-            "translation": "Create *hidden chat links* to send messages without revealing your username. 🔒\nShare your link, stay anonymous, and enjoy private conversations. 💬\nYour identity remains secure while you chat freely. 👻\n\nLet’s keep your chats secret and fun! 🤖✨🎉",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "You are not in sending mode... ⛔",
-            "message": "You are not in sending mode... ⛔",
-            "translation": "You are not in sending mode... ⛔",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "The user you trying to send this message to, changes the hidden link. Maybe you could ask the user to get the new one! ⚠️",
-            "message": "The user you trying to send this message to, changes the hidden link. Maybe you could ask the user to get the new one! ⚠️",
-            "translation": "The user you trying to send this message to, changes the hidden link. Maybe you could ask the user to get the new one! ⚠️",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "You blocked by the user you're trying to send the message! 🔒😿",
-            "message": "You blocked by the user you're trying to send the message! 🔒😿",
-            "translation": "You blocked by the user you're trying to send the message! 🔒😿",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "💬 Reply",
-            "message": "💬 Reply",
-            "translation": "💬 Reply",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "🔒 Block",
-            "message": "🔒 Block",
-            "translation": "🔒 Block",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "🚨 Report",
-            "message": "🚨 Report",
-            "translation": "🚨 Report",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "Your message type is limited by reciever or isn't supported by this bot. 🔒🥹",
-            "message": "Your message type is limited by reciever or isn't supported by this bot. 🔒🥹",
-            "translation": "Your message type is limited by reciever or isn't supported by this bot. 🔒🥹",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "Your message sended successfully! 📨😍",
-            "message": "Your message sended successfully! 📨😍",
-            "translation": "Your message sended successfully! 📨😍",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "This link is not valid. Maybe you need to contact somehow to the link's owner and tell this problem! ⚠️",
-            "message": "This link is not valid. Maybe you need to contact somehow to the link's owner and tell this problem! ⚠️",
-            "translation": "This link is not valid. Maybe you need to contact somehow to the link's owner and tell this problem! ⚠️",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "Send your message ✏️:",
-            "message": "Send your message ✏️:",
-            "translation": "Send your message ✏️:",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "🔴 Ban",
-            "message": "🔴 Ban",
-            "translation": "🔴 Ban",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "🟢 Unban",
-            "message": "🟢 Unban",
-            "translation": "🟢 Unban",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "Banned succesfully! 🔴✅",
-            "message": "Banned succesfully! 🔴✅",
-            "translation": "Banned succesfully! 🔴✅",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "Unbanned successfully! 🟢✅",
-            "message": "Unbanned successfully! 🟢✅",
-            "translation": "Unbanned successfully! 🟢✅",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "🔓 Unblock",
-            "message": "🔓 Unblock",
-            "translation": "🔓 Unblock",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "Blocked succesfully! 🔒✅",
-            "message": "Blocked succesfully! 🔒✅",
-            "translation": "Blocked succesfully! 🔒✅",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "Unblocked successfully! 🔓✅",
-            "message": "Unblocked successfully! 🔓✅",
-            "translation": "Unblocked successfully! 🔓✅",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "There is a problem in our servers. Please be patient and try later! ⚠️",
-            "message": "There is a problem in our servers. Please be patient and try later! ⚠️",
-            "translation": "There is a problem in our servers. Please be patient and try later! ⚠️",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "You are banned by bot's admin and you can't use bot anymore! ⛔❌🔴",
-            "message": "You are banned by bot's admin and you can't use bot anymore! ⛔❌🔴",
-            "translation": "You are banned by bot's admin and you can't use bot anymore! ⛔❌🔴",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+          "id": "Name",
+          "string": "%[1]v",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "app.config.name"
         }
-    ]
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "🔗 Change Hidden Link",
+      "message": "🔗 Change Hidden Link",
+      "translation": "🔗 Change Hidden Link",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "🚫 Message Restrictions",
+      "message": "🚫 Message Restrictions",
+      "translation": "🚫 Message Restrictions",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "settings_message",
+      "message": "settings_message",
+      "translation": "Here is your account control center! 🛠️🪛🙆\n\nYou can change your hidden link 🔗, set allowed/disallowed message types ✅❌ and more! 😇",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Yes, I'm sure ✅",
+      "message": "Yes, I'm sure ✅",
+      "translation": "Yes, I'm sure ✅",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Cancel ❌",
+      "message": "Cancel ❌",
+      "translation": "Cancel ❌",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Are you sure you want change the hidden link? Your previous link will be invalid! 🚨🚫",
+      "message": "Are you sure you want change the hidden link? Your previous link will be invalid! 🚨🚫",
+      "translation": "Are you sure you want change the hidden link? Your previous link will be invalid! 🚨🚫",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Text",
+      "message": "Text",
+      "translation": "Text",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Sticker",
+      "message": "Sticker",
+      "translation": "Sticker",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Gif",
+      "message": "Gif",
+      "translation": "Gif",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Photo",
+      "message": "Photo",
+      "translation": "Photo",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Video",
+      "message": "Video",
+      "translation": "Video",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Voice",
+      "message": "Voice",
+      "translation": "Voice",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Audio",
+      "message": "Audio",
+      "translation": "Audio",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Document",
+      "message": "Document",
+      "translation": "Document",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "⬅️ Back",
+      "message": "⬅️ Back",
+      "translation": "⬅️ Back",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "message_restrictions_settings_message",
+      "message": "message_restrictions_settings_message",
+      "translation": "You can set what type of messages you want to recieve or not from others! 💯",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "about_message",
+      "message": "about_message",
+      "translation": "Create *hidden chat links* to send messages without revealing your username. 🔒\nShare your link, stay anonymous, and enjoy private conversations. 💬\nYour identity remains secure while you chat freely. 👻\n\nLet’s keep your chats secret and fun! 🤖✨🎉",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "You are not in sending mode... ⛔",
+      "message": "You are not in sending mode... ⛔",
+      "translation": "You are not in sending mode... ⛔",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "The user you trying to send this message to, changes the hidden link. Maybe you could ask the user to get the new one! ⚠️",
+      "message": "The user you trying to send this message to, changes the hidden link. Maybe you could ask the user to get the new one! ⚠️",
+      "translation": "The user you trying to send this message to, changes the hidden link. Maybe you could ask the user to get the new one! ⚠️",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "You blocked by the user you're trying to send the message! 🔒😿",
+      "message": "You blocked by the user you're trying to send the message! 🔒😿",
+      "translation": "You blocked by the user you're trying to send the message! 🔒😿",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "💬 Reply",
+      "message": "💬 Reply",
+      "translation": "💬 Reply",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "🔒 Block",
+      "message": "🔒 Block",
+      "translation": "🔒 Block",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "🚨 Report",
+      "message": "🚨 Report",
+      "translation": "🚨 Report",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Your message type is limited by reciever or isn't supported by this bot. 🔒🥹",
+      "message": "Your message type is limited by reciever or isn't supported by this bot. 🔒🥹",
+      "translation": "Your message type is limited by reciever or isn't supported by this bot. 🔒🥹",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Your message sended successfully! 📨😍",
+      "message": "Your message sended successfully! 📨😍",
+      "translation": "Your message sended successfully! 📨😍",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "This link is not valid. Maybe you need to contact somehow to the link's owner and tell this problem! ⚠️",
+      "message": "This link is not valid. Maybe you need to contact somehow to the link's owner and tell this problem! ⚠️",
+      "translation": "This link is not valid. Maybe you need to contact somehow to the link's owner and tell this problem! ⚠️",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Send your message ✏️:",
+      "message": "Send your message ✏️:",
+      "translation": "Send your message ✏️:",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "🔴 Ban",
+      "message": "🔴 Ban",
+      "translation": "🔴 Ban",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "🟢 Unban",
+      "message": "🟢 Unban",
+      "translation": "🟢 Unban",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Banned succesfully! 🔴✅",
+      "message": "Banned succesfully! 🔴✅",
+      "translation": "Banned succesfully! 🔴✅",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Unbanned successfully! 🟢✅",
+      "message": "Unbanned successfully! 🟢✅",
+      "translation": "Unbanned successfully! 🟢✅",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "🔓 Unblock",
+      "message": "🔓 Unblock",
+      "translation": "🔓 Unblock",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Blocked succesfully! 🔒✅",
+      "message": "Blocked succesfully! 🔒✅",
+      "translation": "Blocked succesfully! 🔒✅",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Unblocked successfully! 🔓✅",
+      "message": "Unblocked successfully! 🔓✅",
+      "translation": "Unblocked successfully! 🔓✅",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "There is a problem in our servers. Please be patient and try later! ⚠️",
+      "message": "There is a problem in our servers. Please be patient and try later! ⚠️",
+      "translation": "There is a problem in our servers. Please be patient and try later! ⚠️",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "You are banned by bot's admin and you can't use bot anymore! ⛔❌🔴",
+      "message": "You are banned by bot's admin and you can't use bot anymore! ⛔❌🔴",
+      "translation": "You are banned by bot's admin and you can't use bot anymore! ⛔❌🔴",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    }
+  ]
 }
