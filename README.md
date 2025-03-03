@@ -1,9 +1,12 @@
 # Hidden Chat Bot
-**Notice: This bot is not ready to use in production**
+![License](https://img.shields.io/github/license/moheb2000/hidden-chat-bot)
+![go.mod Go version](https://img.shields.io/github/go-mod/go-version/moheb2000/hidden-chat-bot)
 
 A telegram bot written in go that let users creates anonymous message links for others to recieve other messages without revieling their usernames.
 
 ## Installation Guide
+> [!NOTE]
+> Development take place in main branch, so it may have bugs or doesn't run at all! If you want to build this project from source, change the cloned repository to a version tag before starting to build!
 ### Prerequisites
 Hidden chat bot stores data on postgres. So you need to install it on your server and create a database for connecting to it.
 
@@ -29,11 +32,7 @@ make migration/down
 ### Running the bot
 For running the bot in development mode, run:
 ```
-make run/bot
-```
-Or this for persian locale:
-```
-make run/bot/fa
+make run/bot name="<Bot Name>" locale="<en-us or fa-ir>"
 ```
 And for building the bot and getting an executable file, run:
 ```
