@@ -6,6 +6,7 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
+	"os"
 	"strconv"
 	"strings"
 
@@ -27,23 +28,24 @@ func (app *application) start(ctx context.Context, b *bot.Bot, update *models.Up
 		return
 	}
 
-	// Modify this section to show the keyboard when starting the app no matter what command used
-	b.SendMessage(ctx, &bot.SendMessageParams{
-		ChatID:    update.Message.Chat.ID,
-		Text:      app.config.locale.Translate("start_message"),
-		ParseMode: models.ParseModeMarkdownV1,
-		ReplyMarkup: models.ReplyKeyboardMarkup{
-			Keyboard: [][]models.KeyboardButton{
-				{
-					{Text: app.config.locale.Translate("🔗 Get Hidden Link")},
-				},
-				{
-					{Text: app.config.locale.Translate("⚙️ Settings")},
-					{Text: app.config.locale.Translate("ℹ️ About")},
-				},
+	rkm := models.ReplyKeyboardMarkup{
+		Keyboard: [][]models.KeyboardButton{
+			{
+				{Text: app.config.locale.Translate("🔗 Get Hidden Link")},
 			},
-			ResizeKeyboard: true,
+			{
+				{Text: app.config.locale.Translate("⚙️ Settings")},
+				{Text: app.config.locale.Translate("ℹ️ About")},
+			},
 		},
+		ResizeKeyboard: true,
+	}
+
+	b.SendMessage(ctx, &bot.SendMessageParams{
+		ChatID:      update.Message.Chat.ID,
+		Text:        app.config.locale.Translate("start_message"),
+		ParseMode:   models.ParseModeMarkdownV1,
+		ReplyMarkup: rkm,
 	})
 }
 
@@ -282,11 +284,13 @@ func (app *application) send(ctx context.Context, b *bot.Bot, update *models.Upd
 				{Text: app.config.locale.Translate("🔒 Block"), CallbackData: "block_" + strconv.FormatInt(u.ChatID, 10)},
 				{Text: app.config.locale.Translate("🚨 Report"), CallbackData: "report_" + strconv.FormatInt(u.ChatID, 10)},
 			},
-			{
-				// TODO: Add changing ad link in admin panel after implementing admin user
-				{Text: "Ad", URL: "https://t.me/Otazy"},
-			},
 		},
+	}
+
+	if os.Getenv("AD_TEXT") != "" && os.Getenv("AD_URL") != "" {
+		ibm.InlineKeyboard = append(ibm.InlineKeyboard, []models.InlineKeyboardButton{
+			{Text: os.Getenv("AD_TEXT"), URL: os.Getenv("AD_URL")},
+		})
 	}
 
 	// Check if the message type is text and it's an allowed type
@@ -446,6 +450,7 @@ func (app *application) report(ctx context.Context, b *bot.Bot, update *models.U
 }
 
 // ban runs when admin clicks on ban inline button below a message to ban the user from using bot
+// TODO: User default telegram api for banning instead of a custom logic
 func (app *application) ban(ctx context.Context, b *bot.Bot, update *models.Update) {
 	b.AnswerCallbackQuery(ctx, &bot.AnswerCallbackQueryParams{
 		CallbackQueryID: update.CallbackQuery.ID,

@@ -25,13 +25,17 @@ func (app *application) addUserInFirstStart(next bot.HandlerFunc) bot.HandlerFun
 			return
 		}
 
-		// If the user doesn't exist in the database, create a new user record
-		if !exists {
-			err = app.users.Insert(update.Message.Chat.ID)
-			if err != nil {
-				sendError(ctx, b, update.Message.Chat.ID, "There is a problem in our servers. Please wait a moment and try again...", err)
-				return
-			}
+		// If the user exists in the database, run the next handler and return
+		if exists {
+			next(ctx, b, update)
+			return
+		}
+
+		// Insert new user to the database
+		err = app.users.Insert(update.Message.Chat.ID)
+		if err != nil {
+			sendError(ctx, b, update.Message.Chat.ID, "There is a problem in our servers. Please wait a moment and try again...", err)
+			return
 		}
 
 		isOneUser, err := app.users.IsOneUser()
@@ -47,6 +51,25 @@ func (app *application) addUserInFirstStart(next bot.HandlerFunc) bot.HandlerFun
 		}
 
 		next(ctx, b, update)
+
+		// Because users can start the bot with deeplink for the first time, they will not have reply buttons till they start the bot again without any deep link, I add this reply button after users first start the bot whether its start with deep link or without
+		rkm := models.ReplyKeyboardMarkup{
+			Keyboard: [][]models.KeyboardButton{
+				{
+					{Text: app.config.locale.Translate("🔗 Get Hidden Link")},
+				},
+				{
+					{Text: app.config.locale.Translate("⚙️ Settings")},
+					{Text: app.config.locale.Translate("ℹ️ About")},
+				},
+			},
+			ResizeKeyboard: true,
+		}
+
+		b.EditMessageText(ctx, &bot.EditMessageTextParams{
+			ChatID:      update.Message.Chat.ID,
+			ReplyMarkup: rkm,
+		})
 	}
 }
 

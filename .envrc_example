@@ -1,2 +1,4 @@
 export HIDDEN_CHAT_TOKEN=<TELEGRAM_BOT_TOKEN>
 export HIDDEN_CHAT_DB_DSN=<POSTGRES_DSN>
+export AD_TEXT=Make a chat bot for yourself
+export AD_URL=https://github.com/moheb2000/hidden-chat-bot
